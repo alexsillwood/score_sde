@@ -23,7 +23,7 @@ import tensorflow as tf
 import logging
 import os
 
-config_ = tf.ConfigProto()
+config_ = tf.compat.v1.ConfigProto()
 config_.gpu_options.allow_growth = True
 tf.Session(config=config)
 
