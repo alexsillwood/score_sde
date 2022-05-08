@@ -25,7 +25,7 @@ import os
 
 config_ = tf.compat.v1.ConfigProto()
 config_.gpu_options.allow_growth = True
- tf.compat.v1.Session(config=config_)
+tf.compat.v1.Session(config=config_)
 
 FLAGS = flags.FLAGS
 
