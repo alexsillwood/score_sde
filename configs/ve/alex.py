@@ -26,7 +26,7 @@ def get_config():
   training.sde = 'vesde'
   training.continuous = True
   training.n_iters = 951 #00
-  training.snapshot_freq = 500
+  training.snapshot_freq = 950
 
   # sampling
   sampling = config.sampling
