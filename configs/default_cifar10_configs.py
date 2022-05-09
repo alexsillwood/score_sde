@@ -16,7 +16,7 @@ def get_default_configs():
   training.snapshot_sampling = True
   training.likelihood_weighting = False
   training.continuous = True
-  training.n_jitted_steps = 5
+  training.n_jitted_steps = 1 #originally 5
   training.reduce_mean = False
 
   # sampling
