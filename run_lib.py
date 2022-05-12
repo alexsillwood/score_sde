@@ -99,7 +99,7 @@ def train(config, workdir):
     if c < (train_ds.cardinality()//10):
       train_ds_.append(i)
     c+=1
-  print("Train length ",len(train_ds_)
+  print("Train length ",len(train_ds_))
   print("Eval length ",eval_ds.cardinality())
   eval_ds_ = []
   c = 0
