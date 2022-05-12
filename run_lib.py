@@ -107,9 +107,9 @@ def train(config, workdir):
   eval_iter_ = iter(eval_ds)  # pytype: disable=wrong-arg-types
   train_iter = []
   eval_iter = [] 
-  for i in range(n*0.1//1):
+  for i in range((n+1)*0.1//1):
     train_iter.append(next(train_iter_))
-  for i in range(m*0.1//1):
+  for i in range((m+1)*0.1//1):
     test_iter.append(next(test_iter_))
   train_iter = iter(train_iter)
   test_iter = iter(test_iter)
