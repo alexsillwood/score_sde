@@ -47,6 +47,8 @@ from absl import flags
 
 FLAGS = flags.FLAGS
 
+train_loss_txt = open("train_loss.txt", "w+")
+eval_loss_txt = open("eval_loss.txt", "w+")
 
 def train(config, workdir):
   """Runs the training pipeline.
@@ -158,6 +160,7 @@ def train(config, workdir):
     # Execute one training step
     (_, pstate), ploss = p_train_step((next_rng, pstate), batch)
     loss = flax.jax_utils.unreplicate(ploss).mean()
+    train_loss_txt.write(str(loss)+"\n")
     # Log to console, file and tensorboard on host 0
     if jax.host_id() == 0 and step % config.training.log_freq == 0:
       logging.info("step: %d, training_loss: %.5e" % (step, loss))
@@ -178,6 +181,7 @@ def train(config, workdir):
       next_rng = jnp.asarray(next_rng)
       (_, _), peval_loss = p_eval_step((next_rng, pstate), eval_batch)
       eval_loss = flax.jax_utils.unreplicate(peval_loss).mean()
+      eval_loss_txt.write(str(eval_loss)+"\n")
       if jax.host_id() == 0:
         logging.info("step: %d, eval_loss: %.5e" % (step, eval_loss))
         writer.scalar("eval_loss", eval_loss, step)
@@ -578,3 +582,5 @@ def evaluate(config,
     os.path.join(eval_dir, f"meta_{jax.host_id()}_*"))
   for file in meta_files:
     tf.io.gfile.remove(file)
+eval_loss_txt.close()
+train_loss_txt.close()
