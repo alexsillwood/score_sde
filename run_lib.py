@@ -92,24 +92,8 @@ def train(config, workdir):
   train_ds, eval_ds, _ = datasets.get_dataset(config,
                                               additional_dim=config.training.n_jitted_steps,
                                               uniform_dequantization=config.data.uniform_dequantization)
-  print("Train length ",train_ds.cardinality())
-  train_ds_ = []
-  c = 0
-  for i in train_ds:
-    if c < (train_ds.cardinality()//10):
-      train_ds_.append(i)
-    c+=1
-  print("Train length ",len(train_ds_))
-  print("Eval length ",eval_ds.cardinality())
-  eval_ds_ = []
-  c = 0
-  for i in ds:
-    if c < (eval_ds.cardinality//10):
-      eval_ds_.append(i)
-    c+=1
-  print("Eval length ",len(eval_ds_))
-  train_iter = iter(train_ds_)  # pytype: disable=wrong-arg-types
-  eval_iter = iter(eval_ds_)  # pytype: disable=wrong-arg-types
+  train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
+  eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
   # Create data normalizer and its inverse
   scaler = datasets.get_data_scaler(config)
   inverse_scaler = datasets.get_data_inverse_scaler(config)
