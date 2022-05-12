@@ -196,7 +196,7 @@ def get_dataset(config, additional_dim=None, uniform_dequantization=False, evalu
       ds = dataset_builder.with_options(dataset_options)
     ds = ds.shuffle(shuffle_buffer_size)
     ds = ds.map(preprocess_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    ds = ds.range(ds.cardinality()//10)
+    #ds = ds.range(ds.cardinality()//10)
     ds = ds.repeat(count=num_epochs)
     for batch_size in reversed(batch_dims):
       ds = ds.batch(batch_size, drop_remainder=True)
