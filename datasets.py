@@ -203,6 +203,5 @@ def get_dataset(config, additional_dim=None, uniform_dequantization=False, evalu
 
   train_ds = create_dataset(dataset_builder, train_split_name)
   eval_ds = create_dataset(dataset_builder, eval_split_name)
-  print(train_ds.shape)#
-  print(train_ds)#
+  
   return train_ds, eval_ds, dataset_builder
