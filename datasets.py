@@ -192,8 +192,10 @@ def get_dataset(config, additional_dim=None, uniform_dequantization=False, evalu
       dataset_builder.download_and_prepare()
       ds = dataset_builder.as_dataset(
         split=split, shuffle_files=True, read_config=read_config)
+      ds = ds.range(ds.cardinality()//10)##
     else:
       ds = dataset_builder.with_options(dataset_options)
+      ds = ds.range(ds.cardinality()//10)##
     ds = ds.repeat(count=num_epochs)
     ds = ds.shuffle(shuffle_buffer_size)
     ds = ds.map(preprocess_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
@@ -203,16 +205,5 @@ def get_dataset(config, additional_dim=None, uniform_dequantization=False, evalu
 
   train_ds = create_dataset(dataset_builder, train_split_name)
   eval_ds = create_dataset(dataset_builder, eval_split_name)
-  train_ds_ = []
-  c = 0
-  for i in train_ds:
-    if c < (len(train_ds)+1)*0.1//1:
-      train_ds_.append(i)
-    c+=1
-  eval_ds_ = []
-  c = 0
-  for i in eval_ds:
-    if c < (len(eval_ds)+1)*0.1//1:
-      eval_ds_.append(i)
-    c+=1
-  return train_ds_, eval_ds_, dataset_builder
+
+  return train_ds, eval_ds, dataset_builder
