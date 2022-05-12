@@ -95,6 +95,14 @@ def train(config, workdir):
                                               uniform_dequantization=config.data.uniform_dequantization)
   train_iter = iter(train_ds)  # pytype: disable=wrong-arg-types
   eval_iter = iter(eval_ds)  # pytype: disable=wrong-arg-types
+  n = 0
+  for i in train_iter:
+    n += 1
+  print("N = ", n)
+  m = 0
+  for i in train_iter:
+    m += 1
+  print("M = ", m)
   # Create data normalizer and its inverse
   scaler = datasets.get_data_scaler(config)
   inverse_scaler = datasets.get_data_inverse_scaler(config)
