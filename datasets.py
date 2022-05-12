@@ -70,14 +70,12 @@ def central_crop(image, size):
 
 def get_dataset(config, additional_dim=None, uniform_dequantization=False, evaluation=False):
   """Create data loaders for training and evaluation.
-
   Args:
     config: A ml_collection.ConfigDict parsed from config files.
     additional_dim: An integer or `None`. If present, add one additional dimension to the output data,
       which equals the number of steps jitted together.
     uniform_dequantization: If `True`, add uniform dequantization to images.
     evaluation: If `True`, fix number of epochs to 1.
-
   Returns:
     train_ds, eval_ds, dataset_builder.
   """
@@ -194,15 +192,13 @@ def get_dataset(config, additional_dim=None, uniform_dequantization=False, evalu
         split=split, shuffle_files=True, read_config=read_config)
     else:
       ds = dataset_builder.with_options(dataset_options)
+    ds = ds.repeat(count=num_epochs)
     ds = ds.shuffle(shuffle_buffer_size)
     ds = ds.map(preprocess_fn, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-    #ds = ds.range(ds.cardinality()//10)
-    ds = ds.repeat(count=num_epochs)
     for batch_size in reversed(batch_dims):
       ds = ds.batch(batch_size, drop_remainder=True)
     return ds.prefetch(prefetch_size)
 
   train_ds = create_dataset(dataset_builder, train_split_name)
   eval_ds = create_dataset(dataset_builder, eval_split_name)
-
   return train_ds, eval_ds, dataset_builder
